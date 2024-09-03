@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+    environment {
+        DIRECTORY_PATH = '/path/to/my/codefile'    
+        TESTING_ENVIRONMENT = 'QA'
+        PRODUCTION_ENVIRONMENT = 'khushi'      
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building: Retrieving source code from the directory path specified by the environment variable: ${env.DIRECTORY_PATH}"
+                echo "Building: Compiling the code and generating the required artifacts"
+                echo "Building using Maven"
+
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo "Testing: Executing unit tests using JUnit"
+                echo "Testing: Running integration tests with Mockito"
+
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo "Code Quality: Assessing code quality with SonarQube"
+
+            }
+        }
+        stage('Security Scan') {
+            steps {
+               echo "Performing the security scan using ZAP"
+               
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+             echo "Deploying the application to an AWS EC2 instance"
+
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+               echo "Running integration tests with Maven to verify the application functions as expected"
+
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+               echo "Deploying the application to an AWS EC2 instance"
+
+            }
+        }
+    }
+    post{
+        success {
+            emailext body: 'Jenkins exp6: success',
+                subject: 'Jenkins success',
+                attachLog: true,
+                to: 'khushiptl55@gmail.com'
+        }
+        failure {
+            emailext body: 'Jenkins exp6: failure',
+                subject: 'Jenkins failure',
+                attachLog: true,
+                to: 'khushiptl55@gmail.com'
+        }
+    }
+}
